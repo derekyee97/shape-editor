@@ -4,6 +4,7 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -302,10 +303,13 @@ public class JavaFXApplication13 extends Application
 
 	       rightMenu.setPadding(new Insets(10));
 	           
+               root.setPadding(new Insets(0, 35, 20, 30));
 	       root.setCenter(shapeScene);
 	       root.setTop(menuBar);
 	       root.setRight(rightMenu);
-	       root.setBottom(addShapeButton);
+               HBox center = new HBox(10, addShapeButton);
+               center.setAlignment(Pos.CENTER);
+	       root.setBottom(center);
 
 	       Scene scene = new Scene(root,1000,650);
 	       primaryStage.setScene(scene);
