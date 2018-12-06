@@ -1,6 +1,4 @@
-/**************************
- * 
- * @author: Derek Yee
+* @author: Derek Yee
  * Assignment: ICA#14 3d shapes and subscenes
  * date: 11/13/2018
  * 
