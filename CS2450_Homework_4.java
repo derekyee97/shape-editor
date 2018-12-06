@@ -1,10 +1,9 @@
+package javafxapplication13;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -27,22 +26,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
-import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Line;
-public class CS2450_Homework_4 extends Application
+import javafx.scene.transform.Rotate;
+
+public class JavaFXApplication13 extends Application
 {
-		//global variables 
-		Shape selectedShape=null;
-		List<Shape> shapesListStore=new ArrayList<>(); 
-		BorderPane root=new BorderPane(); 
-		Group shapes=new Group();
+            //global variables 
+            static Shape selectedShape=null;
+            List<Shape> shapesListStore=new ArrayList<>(); 
+            BorderPane root=new BorderPane(); 
+            Group shapes=new Group();
 	    SubScene shapeScene=new SubScene(shapes,700,550,true,SceneAntialiasing.DISABLED);
 	    PerspectiveCamera camera=new PerspectiveCamera(true);
 	    
@@ -58,7 +56,10 @@ public class CS2450_Homework_4 extends Application
 	    Button submitCylinder=new Button("Submit");
 	    Button submitBox=new Button("Submit");
 	    Button addShapeButton=new Button("Add Shape");
-	    Button testButton=new Button("Test");
+            Button left = new Button("Left");
+            Button right = new Button("Right");
+            Button up = new Button("Up");
+            Button down = new Button("Down");
 	    
 	    RadioButton sphereB=new RadioButton("Sphere");
 	    RadioButton boxB=new RadioButton("Box");
@@ -66,24 +67,23 @@ public class CS2450_Homework_4 extends Application
 	    
 	    TextField xPositionSphere=new TextField("Please enter an integer to place shape in the x direction");
 	    TextField xPositionCylinder=new TextField("Please enter an integer to place shape in the x direction");
-	    TextField xPositionBox=new TextField("Please enter an integer to place shape in the x direction");   
-    	TextField yPositionBox=new TextField("Please enter an integer to place shape in the y direction");
-    	TextField yPositionSphere=new TextField("Please enter an integer to place shape in the y direction");
-    	TextField yPositionCylinder=new TextField("Please enter an integer to place shape in the y direction");
-    	TextField sphereRadius=new TextField("Please enter an integer for sphere radius");
-    	TextField cylinderRadius=new TextField("Please enter an integer for cylinder radius");
-    	TextField cylinderHeight=new TextField("Please enter an integer for cylinder height");
-    	TextField boxHeight=new TextField("Please enter an integer for box height");
-    	TextField boxLength=new TextField("Please enter an integer for box length");
-    	TextField boxWidth=new TextField("Please enter an integer for box width");
+            TextField xPositionBox=new TextField("Please enter an integer to place shape in the x direction");   
+            TextField yPositionBox=new TextField("Please enter an integer to place shape in the y direction");
+            TextField yPositionSphere=new TextField("Please enter an integer to place shape in the y direction");
+            TextField yPositionCylinder=new TextField("Please enter an integer to place shape in the y direction");
+            TextField sphereRadius=new TextField("Please enter an integer for sphere radius");
+            TextField cylinderRadius=new TextField("Please enter an integer for cylinder radius");
+            TextField cylinderHeight=new TextField("Please enter an integer for cylinder height");
+            TextField boxHeight=new TextField("Please enter an integer for box height");
+            TextField boxLength=new TextField("Please enter an integer for box length");
+            TextField boxWidth=new TextField("Please enter an integer for box width");
 	    
 	    VBox createShapesMenu; 
 	    VBox sphereMenu;
 	    VBox boxMenu;
 	    VBox cylinderMenu;
 	    
-	    
-		public static void main(String[] args) 
+            public static void main(String[] args) 
 	    {
 	        launch(args);
 	    }
@@ -115,10 +115,160 @@ public class CS2450_Homework_4 extends Application
 	       
 	       shapeScene.setFill(Color.LIGHTBLUE);
 	       
-	       ListView<String> colorList=new ListView();
-	       Label changeColor =new Label("Select Color");
-	       colorList.getItems().addAll("blue","red","pink","black","orange","green","purple");
-	       colorList.setPrefSize(120,150);
+	       ListView<String> backgroundColorList=new ListView();
+	       Label BchangeColor =new Label("Select Background Color: ");
+	       backgroundColorList.getItems().addAll("blue","red","pink","black","orange","green","purple");
+	       backgroundColorList.setPrefSize(120,150);
+               
+               backgroundColorList.getSelectionModel().selectedItemProperty().addListener((source, o, n) -> {
+                String selected = backgroundColorList.getSelectionModel().getSelectedItem();
+                if (selected != null)
+                {
+                    switch(selected)
+                    {
+                         case "blue":
+                           shapeScene.setFill(Color.ROYALBLUE);
+                           break;
+                         case "red":
+                            shapeScene.setFill(Color.RED);
+                            break;
+                         case "pink":
+                            shapeScene.setFill(Color.PINK);
+                            break;
+                         case "black":
+                            shapeScene.setFill(Color.BLACK);
+                            break;
+                         case "orange":
+                            shapeScene.setFill(Color.ORANGE);
+                            break;
+                         case "green":
+                            shapeScene.setFill(Color.GREEN);
+                            break;
+                         case "purple":
+                            shapeScene.setFill(Color.PLUM); 
+                            break;
+                    }
+                }
+               });
+               
+               
+               ListView<String> shapeColorList=new ListView();
+	       Label SchangeColor =new Label("Select Shape Color: ");
+	       shapeColorList.getItems().addAll("blue","red","pink","black","orange","green","purple");
+	       shapeColorList.setPrefSize(120,150);
+               
+                shapeColorList.getSelectionModel().selectedItemProperty().addListener((source, o, n) -> {
+                String selected2 = shapeColorList.getSelectionModel().getSelectedItem();
+                if (selected2 != null)
+                {
+                    if((selectedShape.shape).equals("sphere"))
+                    {
+                        switch(selected2)
+                        {
+                                case "blue":
+                                  selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.ROYALBLUE));
+                                  selectedShape.color = Color.ROYALBLUE;
+                                  break;
+                                case "red":
+                                    selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.RED));
+                                    selectedShape.color = Color.RED;
+                                   break;
+                                case "pink":
+                                    selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.PINK));
+                                    selectedShape.color = Color.PINK;
+                                   break;
+                                case "black":
+                                    selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.BLACK));
+                                    selectedShape.color = Color.BLACK;
+                                   break;
+                                case "orange":
+                                    selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.ORANGE));
+                                    selectedShape.color = Color.ORANGE;
+                                   break;
+                                case "green":
+                                    selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.GREEN));
+                                    selectedShape.color = Color.GREEN;
+                                   break;
+                                case "purple":
+                                    selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.PLUM));
+                                    selectedShape.color = Color.PLUM;
+                                   break;
+                        }
+                    }
+                    if((selectedShape.shape).equals("cylinder"))
+                    {
+                        switch(selected2)
+                        {
+                                case "blue":
+                                  selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.ROYALBLUE));
+                                  selectedShape.color = Color.ROYALBLUE;
+                                  break;
+                                case "red":
+                                    selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.RED));
+                                    selectedShape.color = Color.RED;
+                                   break;
+                                case "pink":
+                                    selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.PINK));
+                                    selectedShape.color = Color.PINK;
+                                   break;
+                                case "black":
+                                    selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.BLACK));
+                                    selectedShape.color = Color.BLACK;
+                                   break;
+                                case "orange":
+                                    selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.ORANGE));
+                                    selectedShape.color = Color.ORANGE;
+                                   break;
+                                case "green":
+                                    selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.GREEN));
+                                    selectedShape.color = Color.GREEN;
+                                   break;
+                                case "purple":
+                                    selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.PLUM));
+                                    selectedShape.color = Color.PLUM;
+                                   break;
+                        }
+                    }
+                    if((selectedShape.shape).equals("box"))
+                    {
+                        switch(selected2)
+                        {
+                                case "blue":
+                                  selectedShape.thisBox.setMaterial(new PhongMaterial(Color.ROYALBLUE));
+                                  selectedShape.color = Color.ROYALBLUE;
+                                  break;
+                                case "red":
+                                    selectedShape.thisBox.setMaterial(new PhongMaterial(Color.RED));
+                                    selectedShape.color = Color.RED;
+                                   break;
+                                case "pink":
+                                    selectedShape.thisBox.setMaterial(new PhongMaterial(Color.PINK));
+                                    selectedShape.color = Color.PINK;
+                                   break;
+                                case "black":
+                                    selectedShape.thisBox.setMaterial(new PhongMaterial(Color.BLACK));
+                                    selectedShape.color = Color.BLACK;
+                                   break;
+                                case "orange":
+                                    selectedShape.thisBox.setMaterial(new PhongMaterial(Color.ORANGE));
+                                    selectedShape.color = Color.ORANGE;
+                                   break;
+                                case "green":
+                                    selectedShape.thisBox.setMaterial(new PhongMaterial(Color.GREEN));
+                                    selectedShape.color = Color.GREEN;
+                                   break;
+                                case "purple":
+                                    selectedShape.thisBox.setMaterial(new PhongMaterial(Color.PLUM)); 
+                                    selectedShape.color = Color.PLUM;
+                                   break;
+                        }
+                    }
+                    
+               }
+               });        
+               
+
+                       
 	       Label rotateLabel=new Label("Slide to rotate");
 	       Slider rotateSlider=new Slider();
 	       rotateSlider.setMin(0);rotateSlider.setMax(360);
@@ -126,38 +276,37 @@ public class CS2450_Homework_4 extends Application
 	       rotateSlider.setMinorTickCount(5);
 	       rotateSlider.setBlockIncrement(10);
 	       //rotateSlider.setShowTickLabels(true);
-	       Label leftRightLabel=new Label("Slide to slide shape to left/right");
-	       Slider leftRightSlider=new Slider();
-	       leftRightSlider.setMin(0);
-	       leftRightSlider.setMajorTickUnit(10);leftRightSlider.setMinorTickCount(5);
-	       leftRightSlider.setBlockIncrement(10);
-	       Label upDownLabel=new Label("Slide to slide shape to up/down");
-	       Slider upDownSlider=new Slider();
-	       upDownSlider.setMin(0);
-	       upDownSlider.setMajorTickUnit(10);leftRightSlider.setMinorTickCount(5);
-	       upDownSlider.setBlockIncrement(10);      
+               
+               
+	       Label leftRightLabel=new Label("Move shape left/right");
+	       HBox hbox1 = new HBox(10, left,right);
+               hbox1.setAlignment(Pos.CENTER);
+               
+               left.setOnAction(event -> {
+                  selectedShape.xPosition = selectedShape.xPosition-1;
+               });
+               
+	       Label upDownLabel=new Label("Move shape up/down");
+               HBox hbox2 = new HBox(10, up,down);
+               hbox2.setAlignment(Pos.CENTER);
+               
+
+               
+               
 	       Label scaleLabel=new Label("Slide to change scale ");
 	       Slider scaleSlider=new Slider();
 	       scaleSlider.setMin(0);
-	       scaleSlider.setMajorTickUnit(10);leftRightSlider.setMinorTickCount(5);
+	       scaleSlider.setMajorTickUnit(10);scaleSlider.setMinorTickCount(5);
 	       scaleSlider.setBlockIncrement(10);
-	       VBox rightMenu=new VBox(10,changeColor,colorList,rotateLabel,rotateSlider,leftRightLabel,leftRightSlider,upDownLabel,upDownSlider,scaleLabel,scaleSlider);
-	       
-	       
-	       
+	       VBox rightMenu=new VBox(10,BchangeColor,backgroundColorList,SchangeColor,shapeColorList,leftRightLabel,hbox1,upDownLabel,hbox2,rotateLabel,rotateSlider, scaleLabel,scaleSlider);
+
 	       rightMenu.setPadding(new Insets(10));
-	       
-	       
+	           
 	       root.setCenter(shapeScene);
 	       root.setTop(menuBar);
 	       root.setRight(rightMenu);
 	       root.setBottom(addShapeButton);
-	       root.setLeft(testButton);
-	       
-	       
-	    	
-	    	
-	    	
+
 	       Scene scene = new Scene(root,1000,650);
 	       primaryStage.setScene(scene);
 	       primaryStage.show();
@@ -175,30 +324,25 @@ public class CS2450_Homework_4 extends Application
 	       {
 	    	   root.setCenter(createShapesMenu);
 	       });
-	       testButton.setOnAction(event->{
-	    	   System.out.println(selectedShape.shape);
-	       });
 	       
 	       //when user selects shape they want to create
 	       submitShapeChoice.setOnAction(event->{
-	    	   
-	    	   
 //	    	   for(Shape x:shapesListStore)
 //	    	   {
 //	    		   System.out.println(x.shape);
 //	    	   }
-	    	   if(sphereB.isSelected())
-	    	   {
-	    		   root.setCenter(sphereMenu);
-	    	   }
-	    	   else if(boxB.isSelected()) 
-	    	   {
-	    		   root.setCenter(boxMenu);
-	    	   }
-	    	   else if(cylinderB.isSelected()) 
-	    	   {
-	    		   root.setCenter(cylinderMenu);
-	    	   }
+                    if(sphereB.isSelected())
+                    {
+                            root.setCenter(sphereMenu);
+                    }
+                    else if(boxB.isSelected()) 
+                    {
+                            root.setCenter(boxMenu);
+                    }
+                    else if(cylinderB.isSelected()) 
+                    {
+                            root.setCenter(cylinderMenu);
+                    }
 	       });
 	       //HANDLING SPHERE CREATION
 	       submitSphere.setOnAction(event->
@@ -234,9 +378,13 @@ public class CS2450_Homework_4 extends Application
 	    	   creatingBox.idNum=idNumCounter;
 	    	   idNumCounter=idNumCounter+1;
 	    	   Box createdBox=new Box(creatingBox.width,creatingBox.height,creatingBox.length);
-	    	   createdBox.setId(Integer.toString(creatingBox.idNum));
-	    	   createdBox.setOnMouseClicked(ActionEvent->{
-	    		   selectedShape=creatingBox;
+                   
+                    Rotate rotateX = new Rotate(45, Rotate.X_AXIS);
+                    createdBox.getTransforms().addAll(rotateX);
+                   
+	    	    createdBox.setId(Integer.toString(creatingBox.idNum));
+                    createdBox.setOnMouseClicked(ActionEvent->{
+                    selectedShape=creatingBox;
 	    	   });
 //	    	   Rotate rotate=new Rotate(45,Rotate.X_AXIS);
 //	    	   createdBox.getTransforms().addAll(rotate);
@@ -247,26 +395,26 @@ public class CS2450_Homework_4 extends Application
 	    	   
 	       });
 	       submitCylinder.setOnAction(event->{
-	    	   Shape creatingCylinder=new Shape("cylinder");
-	    	   creatingCylinder.xPosition=Integer.parseInt(xPositionCylinder.getText());
-	    	   creatingCylinder.yPosition=Integer.parseInt(yPositionCylinder.getText());
-	    	   creatingCylinder.radius=Integer.parseInt(cylinderRadius.getText());
-	    	   creatingCylinder.height=Integer.parseInt(cylinderHeight.getText());
-	    	   creatingCylinder.idNum=idNumCounter;
-	    	   idNumCounter++;
-	    	   Cylinder createdCylinder=new Cylinder(creatingCylinder.radius,creatingCylinder.height);
-	    	   createdCylinder.setId(Integer.toString(creatingCylinder.idNum));
-	    	   createdCylinder.setOnMouseClicked(ActionEvent->{
-	    		  selectedShape=creatingCylinder; 
-	    	   });
-	    	   shapes.getChildren().addAll(createdCylinder);
-	    	   root.setCenter(shapeScene);
-	    	   creatingCylinder.thisCylinder=createdCylinder;
-	    	   shapesListStore.add(creatingCylinder);
-	       });
-	       
-	       
-	       
+                    Shape creatingCylinder=new Shape("cylinder");
+                    creatingCylinder.xPosition=Integer.parseInt(xPositionCylinder.getText());
+                    creatingCylinder.yPosition=Integer.parseInt(yPositionCylinder.getText());
+                    creatingCylinder.radius=Integer.parseInt(cylinderRadius.getText());
+                    creatingCylinder.height=Integer.parseInt(cylinderHeight.getText());
+                    creatingCylinder.idNum=idNumCounter;
+                    idNumCounter++;
+                    Cylinder createdCylinder=new Cylinder(creatingCylinder.radius,creatingCylinder.height);
+                    // test z rotate
+                    Rotate rotateX = new Rotate(45, Rotate.X_AXIS);
+                    createdCylinder.getTransforms().addAll(rotateX);        
+                    createdCylinder.setId(Integer.toString(creatingCylinder.idNum));
+                    createdCylinder.setOnMouseClicked(ActionEvent->{
+                        selectedShape=creatingCylinder; 
+                    });
+                    shapes.getChildren().addAll(createdCylinder);
+                    root.setCenter(shapeScene);
+                    creatingCylinder.thisCylinder=createdCylinder;
+                    shapesListStore.add(creatingCylinder);
+	       });  
 	    }
 	    private void addShape(Stage primaryStage, Shape shape)
 	    {
@@ -310,53 +458,50 @@ public class CS2450_Homework_4 extends Application
 	    	createBoxMenu.add(boxLengthL, 0, 2);createBoxMenu.add(boxLength, 1, 2);
 	    	createBoxMenu.add(xPositionL, 0, 3);createBoxMenu.add(xPositionBox, 1, 3);
 	    	createBoxMenu.add(yPositionL, 0, 4);createBoxMenu.add(yPositionBox, 1, 4);
-	    	boxMenu=new VBox(10,boxL,createBoxMenu,submitBox);
-	    	
-	    	
-	    	
+	    	boxMenu=new VBox(10,boxL,createBoxMenu,submitBox);	
 	    }
 
 	    
-private class Shape
-{
-	String shape="";
-	int xPosition;
-	int yPosition;
-	String color="";
-	int length=0,width=0,height=0,radius=0,idNum=0;
-	Sphere thisSphere=null;
-	Box thisBox=null;
-	Cylinder thisCylinder=null;
-	public Shape(String shapeType)
-	{
-		shape=shapeType;
-	}
-	public Shape()
-	{
-		shape="void";
-	}
-	
-	
-	
-}
-
-//will only allow textfields to input digits only if necessary 
-class changeTextListener implements ChangeListener<String>
-{
-	TextField field;
-	public changeTextListener(TextField textField)
-	{
-		field=textField;
-	}
-	public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
-	{
-		if (!newValue.matches("\\d*")) 
-		{
-          field.setText(newValue.replaceAll("[^\\d]", ""));
+    private class Shape
+    {
+        String shape="";
+        int xPosition = 0;
+        int yPosition = 0;
+        Rotate zrotate;
+        Rotate xrotate;
+        Rotate yrotate;
+        Color color= null;
+        int length=0,width=0,height=0,radius=0,idNum=0;
+        Sphere thisSphere=null;
+        Box thisBox=null;
+        Cylinder thisCylinder=null;
+        public Shape(String shapeType)
+        {
+                shape=shapeType;
         }
-		
-	}
-	
-}
+        public Shape()
+        {
+                shape="void";
+        }	
+    }
+
+    //will only allow textfields to input digits only if necessary 
+    class changeTextListener implements ChangeListener<String>
+    {
+            TextField field;
+            public changeTextListener(TextField textField)
+            {
+                    field=textField;
+            }
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
+            {
+                    if (!newValue.matches("\\d*")) 
+                    {
+              field.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+
+            }
+
+    }
 
 }
