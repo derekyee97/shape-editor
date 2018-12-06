@@ -45,7 +45,7 @@ import javafx.scene.shape.Line;
 public class CS2450_Homework_4 extends Application
 {
 		//global variables 
-		
+		Shape selectedShape=null;
 		List<Shape> shapesListStore=new ArrayList<>(); 
 		BorderPane root=new BorderPane(); 
 		Group shapes=new Group();
@@ -64,6 +64,7 @@ public class CS2450_Homework_4 extends Application
 	    Button submitCylinder=new Button("Submit");
 	    Button submitBox=new Button("Submit");
 	    Button addShapeButton=new Button("Add Shape");
+	    Button testButton=new Button("Test");
 	    
 	    RadioButton sphereB=new RadioButton("Sphere");
 	    RadioButton boxB=new RadioButton("Box");
@@ -157,6 +158,7 @@ public class CS2450_Homework_4 extends Application
 	       root.setTop(menuBar);
 	       root.setRight(rightMenu);
 	       root.setBottom(addShapeButton);
+	       root.setLeft(testButton);
 	       
 	       
 	    	
@@ -179,9 +181,14 @@ public class CS2450_Homework_4 extends Application
 	       {
 	    	   root.setCenter(createShapesMenu);
 	       });
+	       testButton.setOnAction(event->{
+	    	   System.out.println(selectedShape.shape);
+	       });
 	       
 	       //when user selects shape they want to create
 	       submitShapeChoice.setOnAction(event->{
+	    	   
+	    	   
 //	    	   for(Shape x:shapesListStore)
 //	    	   {
 //	    		   System.out.println(x.shape);
@@ -210,6 +217,10 @@ public class CS2450_Homework_4 extends Application
 	    	   idNumCounter=idNumCounter+1;   
 	    	   Sphere createdSphere=new Sphere(creatingSphere.radius);
 	    	   createdSphere.setId(Integer.toString(creatingSphere.idNum));
+	    	   createdSphere.setOnMouseClicked(ActionEvent->
+	    	   {
+	    		   selectedShape=creatingSphere;
+	    	   });
 //	    	   Translate translator=new Translate(10,0,0);
 //	    	   createdSphere.getTransforms().add(translator);
 	    	   shapes.getChildren().addAll(createdSphere);
