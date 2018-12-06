@@ -1,9 +1,3 @@
-* @author: Derek Yee
- * Assignment: ICA#14 3d shapes and subscenes
- * date: 11/13/2018
- * 
- * 
- ***********************/
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,6 +235,9 @@ public class CS2450_Homework_4 extends Application
 	    	   idNumCounter=idNumCounter+1;
 	    	   Box createdBox=new Box(creatingBox.width,creatingBox.height,creatingBox.length);
 	    	   createdBox.setId(Integer.toString(creatingBox.idNum));
+	    	   createdBox.setOnMouseClicked(ActionEvent->{
+	    		   selectedShape=creatingBox;
+	    	   });
 //	    	   Rotate rotate=new Rotate(45,Rotate.X_AXIS);
 //	    	   createdBox.getTransforms().addAll(rotate);
 	    	   shapes.getChildren().addAll(createdBox);
@@ -259,6 +256,9 @@ public class CS2450_Homework_4 extends Application
 	    	   idNumCounter++;
 	    	   Cylinder createdCylinder=new Cylinder(creatingCylinder.radius,creatingCylinder.height);
 	    	   createdCylinder.setId(Integer.toString(creatingCylinder.idNum));
+	    	   createdCylinder.setOnMouseClicked(ActionEvent->{
+	    		  selectedShape=creatingCylinder; 
+	    	   });
 	    	   shapes.getChildren().addAll(createdCylinder);
 	    	   root.setCenter(shapeScene);
 	    	   creatingCylinder.thisCylinder=createdCylinder;
