@@ -4,7 +4,6 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -38,12 +37,13 @@ import javafx.scene.transform.Rotate;
 public class JavaFXApplication13 extends Application
 {
             //global variables 
+            PerspectiveCamera camera = new PerspectiveCamera(true);
             static Shape selectedShape=null;
             List<Shape> shapesListStore=new ArrayList<>(); 
             BorderPane root=new BorderPane(); 
             Group shapes=new Group();
 	    SubScene shapeScene=new SubScene(shapes,700,550,true,SceneAntialiasing.DISABLED);
-	    PerspectiveCamera camera=new PerspectiveCamera(true);
+	    //PerspectiveCamera camera=new PerspectiveCamera(true);
 	    
 	    int idNumCounter=1; //will give unique id number to each shape we create
 	    
@@ -90,7 +90,7 @@ public class JavaFXApplication13 extends Application
 	    }
 	    public void start(Stage primaryStage) 
 	    {
-	       createShapeMenu();
+                createShapeMenu();
 	       //emanuel rob
 	       createShapesMenu.setAlignment(Pos.CENTER);sphereMenu.setAlignment(Pos.CENTER);
 	       boxMenu.setAlignment(Pos.CENTER);cylinderMenu.setAlignment(Pos.CENTER);
@@ -105,7 +105,6 @@ public class JavaFXApplication13 extends Application
 	       sphereRadius.textProperty().addListener(new changeTextListener(sphereRadius));
 	       cylinderRadius.textProperty().addListener(new changeTextListener(cylinderRadius)); cylinderHeight.textProperty().addListener(new changeTextListener(cylinderHeight));
 	       boxHeight.textProperty().addListener(new changeTextListener(boxHeight)); boxWidth.textProperty().addListener(new changeTextListener(boxWidth)); boxLength.textProperty().addListener(new changeTextListener(boxLength));
-	       
 	       
 	       MenuBar menuBar=new MenuBar();
 	       Menu fileChoice=new Menu("File");
@@ -151,7 +150,6 @@ public class JavaFXApplication13 extends Application
                     }
                 }
                });
-               
                
                ListView<String> shapeColorList=new ListView();
 	       Label SchangeColor =new Label("Select Shape Color: ");
@@ -267,9 +265,7 @@ public class JavaFXApplication13 extends Application
                     
                }
                });        
-               
-
-                       
+                     
 	       Label rotateLabel=new Label("Slide to rotate");
 	       Slider rotateSlider=new Slider();
 	       rotateSlider.setMin(0);rotateSlider.setMax(360);
@@ -284,16 +280,80 @@ public class JavaFXApplication13 extends Application
                hbox1.setAlignment(Pos.CENTER);
                
                left.setOnAction(event -> {
-                  selectedShape.xPosition = selectedShape.xPosition-1;
+                  if((selectedShape.shape).equals("box"))
+                  {
+                    selectedShape.xPosition = selectedShape.xPosition-1;
+                    selectedShape.thisBox.setTranslateX(selectedShape.xPosition); 
+                  }
+                  if((selectedShape.shape).equals("cylinder"))
+                  {
+                    selectedShape.xPosition = selectedShape.xPosition-1;
+                    selectedShape.thisCylinder.setTranslateX(selectedShape.xPosition); 
+                  }
+                  if((selectedShape.shape).equals("sphere"))
+                  {
+                    selectedShape.xPosition = selectedShape.xPosition-1;
+                    selectedShape.thisSphere.setTranslateX(selectedShape.xPosition);
+                  }            
                });
                
+               right.setOnAction(event -> {
+                  if((selectedShape.shape).equals("box"))
+                  {
+                    selectedShape.xPosition = selectedShape.xPosition+1;
+                    selectedShape.thisBox.setTranslateX(selectedShape.xPosition); 
+                  }
+                  if((selectedShape.shape).equals("cylinder"))
+                  {
+                    selectedShape.xPosition = selectedShape.xPosition+1;
+                    selectedShape.thisCylinder.setTranslateX(selectedShape.xPosition); 
+                  }
+                  if((selectedShape.shape).equals("sphere"))
+                  {
+                    selectedShape.xPosition = selectedShape.xPosition+1;
+                    selectedShape.thisSphere.setTranslateX(selectedShape.xPosition);
+                  }            
+               });
+               
+               up.setOnAction(event -> {
+                  if((selectedShape.shape).equals("box"))
+                  {
+                    selectedShape.yPosition = selectedShape.yPosition-1;
+                    selectedShape.thisBox.setTranslateY(selectedShape.yPosition); 
+                  }
+                  if((selectedShape.shape).equals("cylinder"))
+                  {
+                    selectedShape.yPosition = selectedShape.yPosition-1;
+                    selectedShape.thisCylinder.setTranslateY(selectedShape.yPosition); 
+                  }
+                  if((selectedShape.shape).equals("sphere"))
+                  {
+                    selectedShape.yPosition = selectedShape.yPosition-1;
+                    selectedShape.thisSphere.setTranslateY(selectedShape.yPosition);
+                  }            
+               });
+               
+               down.setOnAction(event -> {
+                  if((selectedShape.shape).equals("box"))
+                  {
+                    selectedShape.yPosition = selectedShape.yPosition+1;
+                    selectedShape.thisBox.setTranslateY(selectedShape.yPosition); 
+                  }
+                  if((selectedShape.shape).equals("cylinder"))
+                  {
+                    selectedShape.yPosition = selectedShape.yPosition+1;
+                    selectedShape.thisCylinder.setTranslateY(selectedShape.yPosition); 
+                  }
+                  if((selectedShape.shape).equals("sphere"))
+                  {
+                    selectedShape.yPosition = selectedShape.yPosition+1;
+                    selectedShape.thisSphere.setTranslateY(selectedShape.yPosition);
+                  }            
+               });
+
 	       Label upDownLabel=new Label("Move shape up/down");
                HBox hbox2 = new HBox(10, up,down);
                hbox2.setAlignment(Pos.CENTER);
-               
-
-               
-               
 	       Label scaleLabel=new Label("Slide to change scale ");
 	       Slider scaleSlider=new Slider();
 	       scaleSlider.setMin(0);
@@ -351,25 +411,29 @@ public class JavaFXApplication13 extends Application
 	       //HANDLING SPHERE CREATION
 	       submitSphere.setOnAction(event->
 	       {
-	    	   Shape creatingSphere=new Shape("sphere");
-	    	   creatingSphere.xPosition=Integer.parseInt(xPositionSphere.getText());
-	    	   creatingSphere.yPosition=Integer.parseInt(yPositionSphere.getText());
-	    	   creatingSphere.radius=Integer.parseInt(sphereRadius.getText());
-	    	   creatingSphere.idNum=idNumCounter;
-	    	   idNumCounter=idNumCounter+1;   
-	    	   Sphere createdSphere=new Sphere(creatingSphere.radius);
-	    	   createdSphere.setId(Integer.toString(creatingSphere.idNum));
-	    	   createdSphere.setOnMouseClicked(ActionEvent->
-	    	   {
-	    		   selectedShape=creatingSphere;
-	    	   });
-//	    	   Translate translator=new Translate(10,0,0);
-//	    	   createdSphere.getTransforms().add(translator);
-	    	   shapes.getChildren().addAll(createdSphere);
-	    	   creatingSphere.thisSphere=createdSphere;
-	    	   root.setCenter(shapeScene);
-	    	   shapesListStore.add(creatingSphere);
-	    	   
+                    Shape creatingSphere=new Shape("sphere");
+                    creatingSphere.xPosition=Integer.parseInt(xPositionSphere.getText());
+                    creatingSphere.yPosition=Integer.parseInt(yPositionSphere.getText());
+                    creatingSphere.radius=Integer.parseInt(sphereRadius.getText());
+                    creatingSphere.idNum=idNumCounter;
+                    idNumCounter=idNumCounter+1;   
+                    Sphere createdSphere=new Sphere(creatingSphere.radius);
+                    createdSphere.setId(Integer.toString(creatingSphere.idNum)); 
+                    int spherex = Integer.parseInt(xPositionSphere.getText());
+                    int spherey = Integer.parseInt(yPositionSphere.getText());
+                    createdSphere.getTransforms().add( new Translate(spherex, -spherey, 0));
+                    createdSphere.setOnMouseClicked(ActionEvent->
+                    {
+                        selectedShape=creatingSphere;
+                        selectedShape.xPosition = spherex;
+                        selectedShape.yPosition = -spherey;
+                    });
+ //	    	   Translate translator=new Translate(10,0,0);
+ //	    	   createdSphere.getTransforms().add(translator);
+                    shapes.getChildren().addAll(createdSphere);
+                    creatingSphere.thisSphere=createdSphere;
+                    root.setCenter(shapeScene);
+                    shapesListStore.add(creatingSphere);   
 	       });
 	       submitBox.setOnAction(event->
 	       {
@@ -385,10 +449,14 @@ public class JavaFXApplication13 extends Application
                    
                     Rotate rotateX = new Rotate(45, Rotate.X_AXIS);
                     createdBox.getTransforms().addAll(rotateX);
-                   
+                    int boxx = Integer.parseInt(xPositionBox.getText());
+                    int boxy = Integer.parseInt(yPositionBox.getText());
+                    createdBox.getTransforms().add( new Translate(boxx,-boxy, 0));
 	    	    createdBox.setId(Integer.toString(creatingBox.idNum));
                     createdBox.setOnMouseClicked(ActionEvent->{
                     selectedShape=creatingBox;
+                    selectedShape.xPosition = boxx;
+                    selectedShape.yPosition = -boxy;
 	    	   });
 //	    	   Rotate rotate=new Rotate(45,Rotate.X_AXIS);
 //	    	   createdBox.getTransforms().addAll(rotate);
@@ -409,10 +477,15 @@ public class JavaFXApplication13 extends Application
                     Cylinder createdCylinder=new Cylinder(creatingCylinder.radius,creatingCylinder.height);
                     // test z rotate
                     Rotate rotateX = new Rotate(45, Rotate.X_AXIS);
-                    createdCylinder.getTransforms().addAll(rotateX);        
+                    createdCylinder.getTransforms().addAll(rotateX);  
+                    int testx = Integer.parseInt(xPositionCylinder.getText());
+                    int testy = Integer.parseInt(yPositionCylinder.getText());
+                    createdCylinder.getTransforms().add( new Translate(testx,-testy, 0));
                     createdCylinder.setId(Integer.toString(creatingCylinder.idNum));
                     createdCylinder.setOnMouseClicked(ActionEvent->{
-                        selectedShape=creatingCylinder; 
+                    selectedShape=creatingCylinder; 
+                    selectedShape.xPosition = testx;
+                    selectedShape.yPosition = -testy;
                     });
                     shapes.getChildren().addAll(createdCylinder);
                     root.setCenter(shapeScene);
@@ -436,10 +509,8 @@ public class JavaFXApplication13 extends Application
 	    	refCreateShapeWindowStep1.add(chooseShapeL, 0, 0);refCreateShapeWindowStep1.add(chooseShapeButtons, 0, 1);
 	    	chooseShapeButtons.setAlignment(Pos.CENTER);
 	    	createShapesMenu=new VBox(10,chooseShapeL,chooseShapeButtons,submitShapeChoice);
-	    	
-	    	
+
 	    	Label sphereL=new Label("Sphere Menu");Label boxL=new Label("Box Menu"); Label cylinderL=new Label("Cylinder Menu");
-	    	
 	    	Label xPositionL=new Label("X Position: ");Label xPositionSphereL=new Label("X Position: ");Label xPositionCylinderL=new Label("X Position");
 	    	Label yPositionL=new Label("Y Position: ");Label yPositionSphereL=new Label("Y Position: ");Label yPositionCylinderL=new Label("Y Position");
 	    	Label sphereRadiusL=new Label("Sphere Radius: "); 
@@ -464,8 +535,7 @@ public class JavaFXApplication13 extends Application
 	    	createBoxMenu.add(yPositionL, 0, 4);createBoxMenu.add(yPositionBox, 1, 4);
 	    	boxMenu=new VBox(10,boxL,createBoxMenu,submitBox);	
 	    }
-
-	    
+ 
     private class Shape
     {
         String shape="";
@@ -501,11 +571,10 @@ public class JavaFXApplication13 extends Application
             {
                     if (!newValue.matches("\\d*")) 
                     {
-              field.setText(newValue.replaceAll("[^\\d]", ""));
-            }
+                        field.setText(newValue.replaceAll("[^\\d]", ""));
+                    }
 
             }
-
     }
 
 }
