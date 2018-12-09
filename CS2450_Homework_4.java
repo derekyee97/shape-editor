@@ -1,4 +1,9 @@
-
+/***************************************************
+*
+*   @authors: Kimberlyn Krishnan, Kim Ngan Nguyen, Derek Yee
+*   @Assignment: Homework #4 Group Shape Editor
+*   @Date Due: 12/13/18
+***************************************************
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
