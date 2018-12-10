@@ -4,6 +4,8 @@
 *   @Assignment: Homework #4 Group Shape Editor
 *   @Date Due: 12/13/18
 ***************************************************
+package javafxapplication13;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -47,8 +49,9 @@ import javafx.scene.transform.Translate;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
 
-public class CS2450_Homework_4 extends Application {
+public class JavaFXApplication13 extends Application {
 	// global variables
 	PerspectiveCamera camera = new PerspectiveCamera(true);
 	static Shape selectedShape = null;
@@ -291,73 +294,167 @@ public class CS2450_Homework_4 extends Application {
 		Slider rotateSlider = new Slider();
 		rotateSlider.setMin(0);
 		rotateSlider.setMax(360);
-		rotateSlider.setMajorTickUnit(10);
-		rotateSlider.setMinorTickCount(5);
-		rotateSlider.setBlockIncrement(10);
-		// rotateSlider.setShowTickLabels(true);
-
+                rotateSlider.setShowTickMarks( true);
+                rotateSlider.setShowTickLabels( true);
+		rotateSlider.setMajorTickUnit(180);
+		rotateSlider.setMinorTickCount(2);
+		rotateSlider.setBlockIncrement(60);
+                rotateSlider.setSnapToTicks(true);
+                
+                rotateSlider.valueProperty().addListener((observable, oldvalue, newvalue) -> {
+                    double degrees = rotateSlider.getValue();
+                      
+                    if (degrees == 60.0) {
+                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
+                        if ((selectedShape.shape).equals("box")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			}
+                    }
+                    
+                    if (degrees == 120.0) {
+                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
+                        if ((selectedShape.shape).equals("box")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			}
+                    }
+                    
+                    if (degrees == 180.0) {
+                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
+                        if ((selectedShape.shape).equals("box")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			}
+                    }
+                    
+                    if (degrees == 240.0) {
+                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
+                        if ((selectedShape.shape).equals("box")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			}
+                    }
+                    
+                    if (degrees == 300.0) {
+                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
+                        if ((selectedShape.shape).equals("box")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			}
+                    }
+                    
+                    if (degrees == 360.0) {
+                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
+                        if ((selectedShape.shape).equals("box")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.zrotate = rotateZ;
+                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			}
+                    }
+                });
+                
 		Label leftRightLabel = new Label("Move shape left/right");
 		HBox hbox1 = new HBox(10, left, right);
 		hbox1.setAlignment(Pos.CENTER);
 
 		left.setOnAction(event -> {
-			if ((selectedShape.shape).equals("box")) {
-				selectedShape.xPosition = selectedShape.xPosition - 1;
-				selectedShape.thisBox.setTranslateX(selectedShape.xPosition);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-				selectedShape.xPosition = selectedShape.xPosition - 1;
-				selectedShape.thisCylinder.setTranslateX(selectedShape.xPosition);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-				selectedShape.xPosition = selectedShape.xPosition - 1;
-				selectedShape.thisSphere.setTranslateX(selectedShape.xPosition);
-			}
+                    selectedShape.xPosition = selectedShape.xPosition - 1;
+                    if ((selectedShape.shape).equals("box")) {
+                            selectedShape.thisBox.setTranslateX(selectedShape.xPosition);
+                    }
+                    if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.thisCylinder.setTranslateX(selectedShape.xPosition);
+                    }
+                    if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.thisSphere.setTranslateX(selectedShape.xPosition);
+                    }
 		});
 
 		right.setOnAction(event -> {
-			if ((selectedShape.shape).equals("box")) {
-				selectedShape.xPosition = selectedShape.xPosition + 1;
-				selectedShape.thisBox.setTranslateX(selectedShape.xPosition);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-				selectedShape.xPosition = selectedShape.xPosition + 1;
-				selectedShape.thisCylinder.setTranslateX(selectedShape.xPosition);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-				selectedShape.xPosition = selectedShape.xPosition + 1;
-				selectedShape.thisSphere.setTranslateX(selectedShape.xPosition);
-			}
+                    selectedShape.xPosition = selectedShape.xPosition + 1;
+                    if ((selectedShape.shape).equals("box")) {
+                            selectedShape.thisBox.setTranslateX(selectedShape.xPosition);
+                    }
+                    if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.thisCylinder.setTranslateX(selectedShape.xPosition);
+                    }
+                    if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.thisSphere.setTranslateX(selectedShape.xPosition);
+                    }
 		});
 
 		up.setOnAction(event -> {
+                    selectedShape.yPosition = selectedShape.yPosition - 1;
 			if ((selectedShape.shape).equals("box")) {
-				selectedShape.yPosition = selectedShape.yPosition - 1;
 				selectedShape.thisBox.setTranslateY(selectedShape.yPosition);
 			}
 			if ((selectedShape.shape).equals("cylinder")) {
-				selectedShape.yPosition = selectedShape.yPosition - 1;
 				selectedShape.thisCylinder.setTranslateY(selectedShape.yPosition);
 			}
 			if ((selectedShape.shape).equals("sphere")) {
-				selectedShape.yPosition = selectedShape.yPosition - 1;
 				selectedShape.thisSphere.setTranslateY(selectedShape.yPosition);
 			}
 		});
 
 		down.setOnAction(event -> {
-			if ((selectedShape.shape).equals("box")) {
-				selectedShape.yPosition = selectedShape.yPosition + 1;
-				selectedShape.thisBox.setTranslateY(selectedShape.yPosition);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-				selectedShape.yPosition = selectedShape.yPosition + 1;
-				selectedShape.thisCylinder.setTranslateY(selectedShape.yPosition);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-				selectedShape.yPosition = selectedShape.yPosition + 1;
-				selectedShape.thisSphere.setTranslateY(selectedShape.yPosition);
-			}
+                    selectedShape.yPosition = selectedShape.yPosition + 1;
+                    if ((selectedShape.shape).equals("box")) {
+                            selectedShape.thisBox.setTranslateY(selectedShape.yPosition);
+                    }
+                    if ((selectedShape.shape).equals("cylinder")) {
+                            selectedShape.thisCylinder.setTranslateY(selectedShape.yPosition);
+                    }
+                    if ((selectedShape.shape).equals("sphere")) {
+                            selectedShape.thisSphere.setTranslateY(selectedShape.yPosition);
+                    }
 		});
 		test.setOnAction(event -> {
 			System.out.println("shape: " + selectedShape.shape);
@@ -374,11 +471,134 @@ public class CS2450_Homework_4 extends Application {
 		HBox hbox2 = new HBox(10, up, down);
 		hbox2.setAlignment(Pos.CENTER);
 		Label scaleLabel = new Label("Slide to change scale ");
-		Slider scaleSlider = new Slider();
-		scaleSlider.setMin(0);
-		scaleSlider.setMajorTickUnit(10);
-		scaleSlider.setMinorTickCount(5);
-		scaleSlider.setBlockIncrement(10);
+		Slider scaleSlider = new Slider(1,2,0);
+                scaleSlider.setShowTickLabels(true);
+                scaleSlider.setShowTickMarks(true);
+                scaleSlider.setMajorTickUnit(0.25f);
+                scaleSlider.setBlockIncrement(0.25f);
+                scaleSlider.setSnapToTicks(true);
+                
+                scaleSlider.valueProperty().addListener((observable, oldvalue, newvalue) -> {
+                    double ratio = scaleSlider.getValue();
+                    Scale scale = new Scale();
+                    scale.setX(1.0); 
+                    scale.setY(1.0);
+                    
+                    if (ratio == 1.0){
+                        if ((selectedShape.shape).equals("box")) {
+                            if (selectedShape.thisBox.getTransforms().contains(scale))
+                                selectedShape.thisBox.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisBox.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
+                                selectedShape.thisCylinder.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisCylinder.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            if (selectedShape.thisSphere.getTransforms().contains(scale))
+                                selectedShape.thisSphere.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisSphere.getTransforms().add(scale);
+			}
+                    }
+                    
+                    if (ratio == 1.25){
+                        scale.setX(1.25); 
+                        scale.setY(1.25); 
+                        if ((selectedShape.shape).equals("box")) {
+                            if (selectedShape.thisBox.getTransforms().contains(scale))
+                                selectedShape.thisBox.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisBox.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
+                                selectedShape.thisCylinder.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisCylinder.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            if (selectedShape.thisSphere.getTransforms().contains(scale))
+                                selectedShape.thisSphere.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisSphere.getTransforms().add(scale);
+			}
+                    }
+                    
+                    if (ratio == 1.50){
+                        scale.setX(1.5); 
+                        scale.setY(1.5); 
+                        if ((selectedShape.shape).equals("box")) {
+                            if (selectedShape.thisBox.getTransforms().contains(scale))
+                                selectedShape.thisBox.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisBox.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
+                                selectedShape.thisCylinder.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisCylinder.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            if (selectedShape.thisSphere.getTransforms().contains(scale))
+                                selectedShape.thisSphere.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisSphere.getTransforms().add(scale);
+			}
+                    }
+                    
+                    if (ratio == 1.75){
+                        scale.setX(1.75); 
+                        scale.setY(1.75);   
+                        if ((selectedShape.shape).equals("box")) {
+                            if (selectedShape.thisBox.getTransforms().contains(scale))
+                                selectedShape.thisBox.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisBox.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
+                                selectedShape.thisCylinder.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisCylinder.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            if (selectedShape.thisSphere.getTransforms().contains(scale))
+                                selectedShape.thisSphere.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisSphere.getTransforms().add(scale);
+			}
+                    }
+                    
+                    if (ratio == 2.0){
+                        scale.setX(2.0); 
+                        scale.setY(2.0);
+                        if ((selectedShape.shape).equals("box")) {
+                            if (selectedShape.thisBox.getTransforms().contains(scale))
+                                selectedShape.thisBox.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisBox.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("cylinder")) {
+                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
+                                selectedShape.thisCylinder.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisCylinder.getTransforms().add(scale);
+			}
+			if ((selectedShape.shape).equals("sphere")) {
+                            if (selectedShape.thisSphere.getTransforms().contains(scale))
+                                selectedShape.thisSphere.getTransforms().remove(scale);
+                            selectedShape.scale = scale;
+                            selectedShape.thisSphere.getTransforms().add(scale);
+			}
+                    }
+                    
+                });
+                
 		VBox rightMenu = new VBox(10, BchangeColor, backgroundColorList, SchangeColor, shapeColorList, leftRightLabel,
 				hbox1, upDownLabel, hbox2, rotateLabel, rotateSlider, scaleLabel, scaleSlider);
 
@@ -644,6 +864,7 @@ public class CS2450_Homework_4 extends Application {
 		Rotate zrotate;
 		Rotate xrotate;
 		Rotate yrotate;
+                Scale scale;
 		Color color = null;
 		int length = 0, width = 0, height = 0, radius = 0, idNum = 0;
 		Sphere thisSphere = null;
