@@ -1,10 +1,14 @@
-/***************************************************
-*
-*   @authors: Kimberlyn Krishnan, Kim Ngan Nguyen, Derek Yee
-*   @Assignment: Homework #4 Group Shape Editor
-*   @Date Due: 12/13/18
-***************************************************
-package javafxapplication13;
+/**********************************************************
+ * 
+ * 
+ * @authors: Derek Yee, Kimberlyn Krishnan, Ngan Nguyen
+ * 
+ * @date due: 12/14/2018
+ * 
+ * @class: CS2450 T/TH 4-5:15pm 
+ * 
+ * @assignment: Homework 4 Group Project Shape Editor
+ ************************************************************/
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,6 +29,8 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -51,7 +57,7 @@ import javafx.scene.shape.Cylinder;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 
-public class JavaFXApplication13 extends Application {
+public class CS2450_Homework_4 extends Application {
 	// global variables
 	PerspectiveCamera camera = new PerspectiveCamera(true);
 	static Shape selectedShape = null;
@@ -77,8 +83,10 @@ public class JavaFXApplication13 extends Application {
 	Button right = new Button("Right");
 	Button up = new Button("Up");
 	Button down = new Button("Down");
-	Button test = new Button("test");
-
+	Button hRotate=new Button("Rotate X Axis");
+	Button vRotate=new Button("Rotate Y Axis");
+	Button zRotate=new Button("Rotate Z Axis");
+		
 	RadioButton sphereB = new RadioButton("Sphere");
 	RadioButton boxB = new RadioButton("Box");
 	RadioButton cylinderB = new RadioButton("Cylinder");
@@ -101,10 +109,15 @@ public class JavaFXApplication13 extends Application {
 	VBox boxMenu;
 	VBox cylinderMenu;
 
+	HBox rotateButtons=new HBox(10,hRotate,vRotate,zRotate);
+		
 	FileChooser fileChooser = new FileChooser();
 	Scanner fileReader;
 	PrintWriter printWriter;
 	FileWriter fileWriter;
+	String selected="";
+	String selected2="";
+	Slider scaleSlider = new Slider(0.0,100.0,50.0);
 
 	public static void main(String[] args) {
 		launch(args);
@@ -112,7 +125,7 @@ public class JavaFXApplication13 extends Application {
 
 	public void start(Stage primaryStage) {
 		createShapeMenu();
-		// emanuel rob
+		
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Text Files", "*.txt")); // only want to open text
 																							// files
 		createShapesMenu.setAlignment(Pos.CENTER);
@@ -123,8 +136,12 @@ public class JavaFXApplication13 extends Application {
 		createSphereMenu.setAlignment(Pos.CENTER);
 		createBoxMenu.setAlignment(Pos.CENTER);
 		createCylinderMenu.setAlignment(Pos.CENTER);
-		camera.getTransforms().addAll(new Translate(0, 0, -100));
+		rotateButtons.setAlignment(Pos.CENTER);
+		camera.getTransforms().addAll(new Translate(0, 0, -100)); //HERE
+		
+		
 		shapeScene.setCamera(camera);
+		
 
 		xPositionBox.textProperty().addListener(new changeTextListener(xPositionBox));
 		yPositionBox.textProperty().addListener(new changeTextListener(yPositionBox));
@@ -154,7 +171,7 @@ public class JavaFXApplication13 extends Application {
 		backgroundColorList.setPrefSize(120, 150);
 
 		backgroundColorList.getSelectionModel().selectedItemProperty().addListener((source, o, n) -> {
-			String selected = backgroundColorList.getSelectionModel().getSelectedItem();
+			selected = backgroundColorList.getSelectionModel().getSelectedItem();
 			if (selected != null) {
 				switch (selected) {
 				case "blue":
@@ -188,37 +205,37 @@ public class JavaFXApplication13 extends Application {
 		shapeColorList.setPrefSize(120, 150);
 
 		shapeColorList.getSelectionModel().selectedItemProperty().addListener((source, o, n) -> {
-			String selected2 = shapeColorList.getSelectionModel().getSelectedItem();
+			selected2 = shapeColorList.getSelectionModel().getSelectedItem();
 			if (selected2 != null) {
 				if ((selectedShape.shape).equals("sphere")) {
 					switch (selected2) {
 					case "blue":
 						selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.ROYALBLUE));
-						selectedShape.color = Color.ROYALBLUE;
+						selectedShape.color = selected2;
 						break;
 					case "red":
 						selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.RED));
-						selectedShape.color = Color.RED;
+						selectedShape.color = selected2;
 						break;
 					case "pink":
 						selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.PINK));
-						selectedShape.color = Color.PINK;
+						selectedShape.color = selected2;
 						break;
 					case "black":
 						selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.BLACK));
-						selectedShape.color = Color.BLACK;
+						selectedShape.color = selected2;
 						break;
 					case "orange":
 						selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.ORANGE));
-						selectedShape.color = Color.ORANGE;
+						selectedShape.color = selected2;
 						break;
 					case "green":
 						selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.GREEN));
-						selectedShape.color = Color.GREEN;
+						selectedShape.color = selected2;
 						break;
 					case "purple":
 						selectedShape.thisSphere.setMaterial(new PhongMaterial(Color.PLUM));
-						selectedShape.color = Color.PLUM;
+						selectedShape.color = selected2;
 						break;
 					}
 				}
@@ -226,31 +243,31 @@ public class JavaFXApplication13 extends Application {
 					switch (selected2) {
 					case "blue":
 						selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.ROYALBLUE));
-						selectedShape.color = Color.ROYALBLUE;
+						selectedShape.color = selected2;
 						break;
 					case "red":
 						selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.RED));
-						selectedShape.color = Color.RED;
+						selectedShape.color = selected2;
 						break;
 					case "pink":
 						selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.PINK));
-						selectedShape.color = Color.PINK;
+						selectedShape.color = selected2;
 						break;
 					case "black":
 						selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.BLACK));
-						selectedShape.color = Color.BLACK;
+						selectedShape.color = selected2;
 						break;
 					case "orange":
 						selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.ORANGE));
-						selectedShape.color = Color.ORANGE;
+						selectedShape.color = selected2;
 						break;
 					case "green":
 						selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.GREEN));
-						selectedShape.color = Color.GREEN;
+						selectedShape.color = selected2;
 						break;
 					case "purple":
 						selectedShape.thisCylinder.setMaterial(new PhongMaterial(Color.PLUM));
-						selectedShape.color = Color.PLUM;
+						selectedShape.color = selected2;
 						break;
 					}
 				}
@@ -258,31 +275,30 @@ public class JavaFXApplication13 extends Application {
 					switch (selected2) {
 					case "blue":
 						selectedShape.thisBox.setMaterial(new PhongMaterial(Color.ROYALBLUE));
-						selectedShape.color = Color.ROYALBLUE;
+						selectedShape.color = selected2;
 						break;
 					case "red":
 						selectedShape.thisBox.setMaterial(new PhongMaterial(Color.RED));
-						selectedShape.color = Color.RED;
+						selectedShape.color = selected2;
 						break;
 					case "pink":
 						selectedShape.thisBox.setMaterial(new PhongMaterial(Color.PINK));
-						selectedShape.color = Color.PINK;
-						break;
+						selectedShape.color = selected2;
 					case "black":
 						selectedShape.thisBox.setMaterial(new PhongMaterial(Color.BLACK));
-						selectedShape.color = Color.BLACK;
+						selectedShape.color =  selected2;
 						break;
 					case "orange":
 						selectedShape.thisBox.setMaterial(new PhongMaterial(Color.ORANGE));
-						selectedShape.color = Color.ORANGE;
+						selectedShape.color = selected2;
 						break;
 					case "green":
 						selectedShape.thisBox.setMaterial(new PhongMaterial(Color.GREEN));
-						selectedShape.color = Color.GREEN;
+						selectedShape.color = selected2;
 						break;
 					case "purple":
 						selectedShape.thisBox.setMaterial(new PhongMaterial(Color.PLUM));
-						selectedShape.color = Color.PLUM;
+						selectedShape.color =  selected2;
 						break;
 					}
 				}
@@ -290,116 +306,85 @@ public class JavaFXApplication13 extends Application {
 			}
 		});
 
-		Label rotateLabel = new Label("Slide to rotate");
-		Slider rotateSlider = new Slider();
-		rotateSlider.setMin(0);
-		rotateSlider.setMax(360);
-                rotateSlider.setShowTickMarks( true);
-                rotateSlider.setShowTickLabels( true);
-		rotateSlider.setMajorTickUnit(180);
-		rotateSlider.setMinorTickCount(2);
-		rotateSlider.setBlockIncrement(60);
-                rotateSlider.setSnapToTicks(true);
-                
-                rotateSlider.valueProperty().addListener((observable, oldvalue, newvalue) -> {
-                    double degrees = rotateSlider.getValue();
-                      
-                    if (degrees == 60.0) {
-                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
-                        if ((selectedShape.shape).equals("box")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisBox.getTransforms().add(rotateZ);
+		
+		
+		
+		
+		Label rotateLabel = new Label("Push corresponding buttons to rotate/zoom in that direction");
+		//HANDLING ROTATES
+		vRotate.setOnAction(event->{
+			selectedShape.verticleAngle+=5;
+			Rotate rotate=new Rotate(selectedShape.verticleAngle,Rotate.X_AXIS);
+			if(selectedShape.verticleAngle==360)
+			{
+				selectedShape.verticleAngle=0;
 			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			if(selectedShape.shape.equals("cylinder"))
+			{
+				selectedShape.thisCylinder.getTransforms().add(rotate);
 			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			else if(selectedShape.shape.equals("box"))
+			{
+				selectedShape.thisBox.getTransforms().add(rotate);
 			}
-                    }
-                    
-                    if (degrees == 120.0) {
-                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
-                        if ((selectedShape.shape).equals("box")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			else if(selectedShape.shape.equals("sphere"))
+			{
+				selectedShape.thisSphere.getTransforms().add(rotate);
 			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+		});
+		hRotate.setOnAction(event->{
+			selectedShape.horizontalAngle+=5;
+			Rotate rotate=new Rotate(selectedShape.horizontalAngle,Rotate.Y_AXIS);
+			if(selectedShape.horizontalAngle==360)
+			{
+				selectedShape.horizontalAngle=0;
 			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			if(selectedShape.shape.equals("cylinder"))
+			{
+				selectedShape.thisCylinder.getTransforms().add(rotate);
 			}
-                    }
-                    
-                    if (degrees == 180.0) {
-                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
-                        if ((selectedShape.shape).equals("box")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			else if(selectedShape.shape.equals("box"))
+			{
+				selectedShape.thisBox.getTransforms().add(rotate);
 			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			else if(selectedShape.shape.equals("sphere"))
+			{
+				selectedShape.thisSphere.getTransforms().add(rotate);
 			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+		});
+		zRotate.setOnAction(event->{
+			selectedShape.zAngle+=5;
+			Rotate rotate=new Rotate(selectedShape.zAngle,Rotate.Z_AXIS);
+			if(selectedShape.zAngle==360)
+			{
+				selectedShape.zAngle=0;
 			}
-                    }
-                    
-                    if (degrees == 240.0) {
-                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
-                        if ((selectedShape.shape).equals("box")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisBox.getTransforms().add(rotateZ);
+			if(selectedShape.shape.equals("cylinder"))
+			{
+				selectedShape.thisCylinder.getTransforms().add(rotate);
 			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
+			else if(selectedShape.shape.equals("box"))
+			{
+				selectedShape.thisBox.getTransforms().add(rotate);
 			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisSphere.getTransforms().add(rotateZ);
+			else if(selectedShape.shape.equals("sphere"))
+			{
+				selectedShape.thisSphere.getTransforms().add(rotate);
 			}
-                    }
-                    
-                    if (degrees == 300.0) {
-                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
-                        if ((selectedShape.shape).equals("box")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisBox.getTransforms().add(rotateZ);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisSphere.getTransforms().add(rotateZ);
-			}
-                    }
-                    
-                    if (degrees == 360.0) {
-                        Rotate rotateZ = new Rotate(60, Rotate.Z_AXIS);
-                        if ((selectedShape.shape).equals("box")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisBox.getTransforms().add(rotateZ);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisCylinder.getTransforms().add(rotateZ);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            selectedShape.zrotate = rotateZ;
-                            selectedShape.thisSphere.getTransforms().add(rotateZ);
-			}
-                    }
-                });
+		});
+               
+	
+	
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
                 
 		Label leftRightLabel = new Label("Move shape left/right");
 		HBox hbox1 = new HBox(10, left, right);
@@ -456,151 +441,26 @@ public class JavaFXApplication13 extends Application {
                             selectedShape.thisSphere.setTranslateY(selectedShape.yPosition);
                     }
 		});
-		test.setOnAction(event -> {
-			System.out.println("shape: " + selectedShape.shape);
-			System.out.println("id: " + selectedShape.idNum);
-			System.out.println("Color: " + selectedShape.color);
-			System.out.println("X: " + selectedShape.xPosition);
-			System.out.println("Y: " + selectedShape.yPosition);
-//            	   System.out.println("X Rotate: "+selectedShape.xrotate.toString());
-//            	   System.out.println("Y Rotate: "+selectedShape.yrotate.toString());
-//            	   System.out.println("Z Rotate: "+selectedShape.zrotate.toString());
-		});
-
 		Label upDownLabel = new Label("Move shape up/down");
 		HBox hbox2 = new HBox(10, up, down);
 		hbox2.setAlignment(Pos.CENTER);
 		Label scaleLabel = new Label("Slide to change scale ");
-		Slider scaleSlider = new Slider(1,2,0);
-                scaleSlider.setShowTickLabels(true);
-                scaleSlider.setShowTickMarks(true);
-                scaleSlider.setMajorTickUnit(0.25f);
-                scaleSlider.setBlockIncrement(0.25f);
-                scaleSlider.setSnapToTicks(true);
-                
-                scaleSlider.valueProperty().addListener((observable, oldvalue, newvalue) -> {
-                    double ratio = scaleSlider.getValue();
-                    Scale scale = new Scale();
-                    scale.setX(1.0); 
-                    scale.setY(1.0);
-                    
-                    if (ratio == 1.0){
-                        if ((selectedShape.shape).equals("box")) {
-                            if (selectedShape.thisBox.getTransforms().contains(scale))
-                                selectedShape.thisBox.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisBox.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
-                                selectedShape.thisCylinder.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisCylinder.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            if (selectedShape.thisSphere.getTransforms().contains(scale))
-                                selectedShape.thisSphere.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisSphere.getTransforms().add(scale);
-			}
-                    }
-                    
-                    if (ratio == 1.25){
-                        scale.setX(1.25); 
-                        scale.setY(1.25); 
-                        if ((selectedShape.shape).equals("box")) {
-                            if (selectedShape.thisBox.getTransforms().contains(scale))
-                                selectedShape.thisBox.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisBox.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
-                                selectedShape.thisCylinder.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisCylinder.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            if (selectedShape.thisSphere.getTransforms().contains(scale))
-                                selectedShape.thisSphere.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisSphere.getTransforms().add(scale);
-			}
-                    }
-                    
-                    if (ratio == 1.50){
-                        scale.setX(1.5); 
-                        scale.setY(1.5); 
-                        if ((selectedShape.shape).equals("box")) {
-                            if (selectedShape.thisBox.getTransforms().contains(scale))
-                                selectedShape.thisBox.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisBox.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
-                                selectedShape.thisCylinder.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisCylinder.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            if (selectedShape.thisSphere.getTransforms().contains(scale))
-                                selectedShape.thisSphere.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisSphere.getTransforms().add(scale);
-			}
-                    }
-                    
-                    if (ratio == 1.75){
-                        scale.setX(1.75); 
-                        scale.setY(1.75);   
-                        if ((selectedShape.shape).equals("box")) {
-                            if (selectedShape.thisBox.getTransforms().contains(scale))
-                                selectedShape.thisBox.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisBox.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
-                                selectedShape.thisCylinder.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisCylinder.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            if (selectedShape.thisSphere.getTransforms().contains(scale))
-                                selectedShape.thisSphere.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisSphere.getTransforms().add(scale);
-			}
-                    }
-                    
-                    if (ratio == 2.0){
-                        scale.setX(2.0); 
-                        scale.setY(2.0);
-                        if ((selectedShape.shape).equals("box")) {
-                            if (selectedShape.thisBox.getTransforms().contains(scale))
-                                selectedShape.thisBox.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisBox.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("cylinder")) {
-                            if (selectedShape.thisCylinder.getTransforms().contains(scale))
-                                selectedShape.thisCylinder.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisCylinder.getTransforms().add(scale);
-			}
-			if ((selectedShape.shape).equals("sphere")) {
-                            if (selectedShape.thisSphere.getTransforms().contains(scale))
-                                selectedShape.thisSphere.getTransforms().remove(scale);
-                            selectedShape.scale = scale;
-                            selectedShape.thisSphere.getTransforms().add(scale);
-			}
-                    }
-                    
-                });
-                
-		VBox rightMenu = new VBox(10, BchangeColor, backgroundColorList, SchangeColor, shapeColorList, leftRightLabel,
-				hbox1, upDownLabel, hbox2, rotateLabel, rotateSlider, scaleLabel, scaleSlider);
+		///////////////////////////////////////////
+       
+		scaleSlider.setShowTickLabels(true);
+        scaleSlider.setShowTickMarks(true);
+        scaleSlider.valueProperty().addListener((observable, oldvalue, newvalue) -> 
+        	{
+        		double size=(scaleSlider.getValue())/50;
+                selectedShape.scale.setX(size);
+                selectedShape.scale.setY(size);
+                selectedShape.scale.setZ(size);
+                            
+             });
+               
+		//ADDING ALL NECESSARY NODES TO RIGHT SIDE OF MENU
+        VBox rightMenu = new VBox(10, BchangeColor, backgroundColorList, SchangeColor, shapeColorList, leftRightLabel,
+				hbox1, upDownLabel, hbox2, rotateLabel, rotateButtons,scaleLabel, scaleSlider);
 
 		rightMenu.setPadding(new Insets(10));
 
@@ -611,11 +471,12 @@ public class JavaFXApplication13 extends Application {
 		HBox center = new HBox(10, addShapeButton);
 		center.setAlignment(Pos.CENTER);
 		root.setBottom(center);
-		root.setLeft(test);
+		
 
-		Scene scene = new Scene(root, 1000, 650);
-                scene.getStylesheets().add("file:./src/javafxapplication13/shapeCreatorCSS.css");
-		primaryStage.setScene(scene);
+		Scene myScene = new Scene(root, 1200, 650);
+        myScene.getStylesheets().add("./res/shapeCreatorCSS.css");
+		primaryStage.setScene(myScene);
+		primaryStage.setFullScreen(true);
 		primaryStage.show();
 
 		// HANDLING BUTTON CLICKS AND MENU
@@ -651,11 +512,18 @@ public class JavaFXApplication13 extends Application {
 			creatingSphere.radius = Integer.parseInt(sphereRadius.getText());
 			creatingSphere.idNum = idNumCounter;
 			idNumCounter = idNumCounter + 1;
+			creatingSphere.scale=new Scale(1,1,1);
+			creatingSphere.xrotate=new Rotate(0,Rotate.X_AXIS);
+			creatingSphere.yrotate=new Rotate(0,Rotate.Y_AXIS);
+			
+			
 			Sphere createdSphere = new Sphere(creatingSphere.radius);
 			createdSphere.setId(Integer.toString(creatingSphere.idNum));
 			int spherex = Integer.parseInt(xPositionSphere.getText());
 			int spherey = Integer.parseInt(yPositionSphere.getText());
+			createdSphere.getTransforms().addAll(creatingSphere.xrotate,creatingSphere.yrotate);
 			createdSphere.getTransforms().add(new Translate(spherex, -spherey, 0));
+			createdSphere.getTransforms().addAll(creatingSphere.scale);
 			createdSphere.setOnMouseClicked(ActionEvent -> {
 				selectedShape = creatingSphere;
 				selectedShape.xPosition = spherex;
@@ -676,11 +544,14 @@ public class JavaFXApplication13 extends Application {
 			creatingBox.width = Integer.parseInt(boxWidth.getText());
 			creatingBox.height = Integer.parseInt(boxHeight.getText());
 			creatingBox.idNum = idNumCounter;
+			creatingBox.scale=new Scale(1,1,1);
+			creatingBox.xrotate=new Rotate(0,Rotate.X_AXIS);
+			creatingBox.yrotate=new Rotate(0,Rotate.Y_AXIS);
 			idNumCounter = idNumCounter + 1;
 			Box createdBox = new Box(creatingBox.width, creatingBox.height, creatingBox.length);
-
-			Rotate rotateX = new Rotate(45, Rotate.X_AXIS);
-			createdBox.getTransforms().addAll(rotateX);
+		
+			createdBox.getTransforms().addAll(creatingBox.xrotate,creatingBox.yrotate);
+			createdBox.getTransforms().addAll(creatingBox.scale);
 			int boxx = Integer.parseInt(xPositionBox.getText());
 			int boxy = Integer.parseInt(yPositionBox.getText());
 			createdBox.getTransforms().add(new Translate(boxx, -boxy, 0));
@@ -690,8 +561,7 @@ public class JavaFXApplication13 extends Application {
 				selectedShape.xPosition = boxx;
 				selectedShape.yPosition = -boxy;
 			});
-//	    	   Rotate rotate=new Rotate(45,Rotate.X_AXIS);
-//	    	   createdBox.getTransforms().addAll(rotate);
+	    	 
 			shapes.getChildren().addAll(createdBox);
 			root.setCenter(shapeScene);
 			creatingBox.thisBox = createdBox;
@@ -705,19 +575,25 @@ public class JavaFXApplication13 extends Application {
 			creatingCylinder.radius = Integer.parseInt(cylinderRadius.getText());
 			creatingCylinder.height = Integer.parseInt(cylinderHeight.getText());
 			creatingCylinder.idNum = idNumCounter;
+			creatingCylinder.scale=new Scale(1,1,1);
+			creatingCylinder.xrotate=new Rotate(0,Rotate.X_AXIS);
+			creatingCylinder.yrotate=new Rotate(0,Rotate.Y_AXIS);
 			idNumCounter++;
 			Cylinder createdCylinder = new Cylinder(creatingCylinder.radius, creatingCylinder.height);
 			// test z rotate
-			Rotate rotateX = new Rotate(45, Rotate.X_AXIS);
-			createdCylinder.getTransforms().addAll(rotateX);
+			
+			createdCylinder.getTransforms().addAll(creatingCylinder.xrotate,creatingCylinder.yrotate);
 			int testx = Integer.parseInt(xPositionCylinder.getText());
 			int testy = Integer.parseInt(yPositionCylinder.getText());
-			createdCylinder.getTransforms().add(new Translate(testx, -testy, 0));
+			createdCylinder.getTransforms().addAll(new Translate(testx, -testy, 0));
+			createdCylinder.getTransforms().addAll(creatingCylinder.scale);
 			createdCylinder.setId(Integer.toString(creatingCylinder.idNum));
 			createdCylinder.setOnMouseClicked(ActionEvent -> {
 				selectedShape = creatingCylinder;
 				selectedShape.xPosition = testx;
 				selectedShape.yPosition = -testy;
+				
+				
 			});
 			shapes.getChildren().addAll(createdCylinder);
 			root.setCenter(shapeScene);
@@ -735,12 +611,168 @@ public class JavaFXApplication13 extends Application {
 				while (fileReader.hasNext()) {
 					lineToBeRead = fileReader.nextLine();
 					tokens = lineToBeRead.split(",");
-					System.out.println(tokens[0]);
+					
+					if(tokens[0].equals("sphere"))
+					{
+
+						Shape creatingSphere = new Shape("sphere");
+						creatingSphere.xPosition = Integer.parseInt(tokens[1]);
+						creatingSphere.yPosition = Integer.parseInt(tokens[2]);
+						creatingSphere.radius = Integer.parseInt(tokens[3]);
+						creatingSphere.color=tokens[4];
+						creatingSphere.idNum = idNumCounter;
+						idNumCounter = idNumCounter + 1;
+						creatingSphere.scale=new Scale(1,1,1);
+						creatingSphere.scale.setX(Double.parseDouble(tokens[5]));
+						creatingSphere.scale.setY(Double.parseDouble(tokens[5]));
+						creatingSphere.scale.setZ(Double.parseDouble(tokens[5]));
+						creatingSphere.xrotate=new Rotate(0,Rotate.X_AXIS);
+						creatingSphere.yrotate=new Rotate(0,Rotate.Y_AXIS);
+						
+						
+						Sphere createdSphere = new Sphere(creatingSphere.radius);
+						createdSphere.setId(Integer.toString(creatingSphere.idNum));
+						int spherex = creatingSphere.xPosition;
+						int spherey = creatingSphere.yPosition;
+						createdSphere.getTransforms().addAll(creatingSphere.xrotate,creatingSphere.yrotate);
+						createdSphere.getTransforms().add(new Translate(spherex, spherey, 0));
+						createdSphere.getTransforms().addAll(creatingSphere.scale);
+						
+						createdSphere.setOnMouseClicked(ActionEvent -> {
+							selectedShape = creatingSphere;
+							selectedShape.xPosition = spherex;
+							selectedShape.yPosition = spherey;
+						});
+						// Translate translator=new Translate(10,0,0);
+						// createdSphere.getTransforms().add(translator);
+						
+						shapes.getChildren().addAll(createdSphere);
+						creatingSphere.thisSphere = createdSphere;
+						setColor(creatingSphere,creatingSphere.color,creatingSphere.shape);
+						root.setCenter(shapeScene);
+						
+						shapesListStore.add(creatingSphere);
+					}
+					
+					else if(tokens[0].equals("box"))
+					{
+						Shape creatingBox = new Shape("box");
+						creatingBox.xPosition = Integer.parseInt(tokens[1]);
+						creatingBox.yPosition = Integer.parseInt(tokens[2]);
+						creatingBox.length = Integer.parseInt(tokens[3]);
+						creatingBox.width = Integer.parseInt(tokens[4]);
+						creatingBox.height = Integer.parseInt(tokens[5]);
+						creatingBox.idNum = idNumCounter;
+						creatingBox.scale=new Scale(1,1,1);
+						creatingBox.scale.setX(Double.parseDouble(tokens[7]));
+						creatingBox.scale.setY(Double.parseDouble(tokens[7]));
+						creatingBox.scale.setZ(Double.parseDouble(tokens[7]));
+						creatingBox.horizontalAngle=Double.parseDouble(tokens[8]);
+						creatingBox.verticleAngle=Double.parseDouble(tokens[9]);
+						creatingBox.zAngle=Double.parseDouble(tokens[10]);
+						creatingBox.xrotate=new Rotate(0,Rotate.X_AXIS);
+						creatingBox.yrotate=new Rotate(0,Rotate.Y_AXIS);
+						creatingBox.color=tokens[6];
+						idNumCounter = idNumCounter + 1;
+						Box createdBox = new Box(creatingBox.width, creatingBox.height, creatingBox.length);
+					
+						createdBox.getTransforms().addAll(creatingBox.xrotate,creatingBox.yrotate);
+						createdBox.getTransforms().addAll(creatingBox.scale);
+						int boxx = creatingBox.xPosition;
+						int boxy =  creatingBox.yPosition;
+						createdBox.getTransforms().add(new Translate(boxx, boxy, 0));
+						createdBox.getTransforms().addAll(new Rotate(selectedShape.verticleAngle,Rotate.X_AXIS));
+						createdBox.getTransforms().addAll(new Rotate(selectedShape.horizontalAngle,Rotate.Y_AXIS));
+						createdBox.getTransforms().addAll(new Rotate(selectedShape.zAngle,Rotate.Z_AXIS));
+						createdBox.setId(Integer.toString(creatingBox.idNum));
+						createdBox.setOnMouseClicked(ActionEvent -> {
+							selectedShape = creatingBox;
+							selectedShape.xPosition = boxx;
+							selectedShape.yPosition = boxy;
+						});
+				    	 
+						shapes.getChildren().addAll(createdBox);
+						root.setCenter(shapeScene);
+						creatingBox.thisBox = createdBox;
+						setColor(creatingBox,creatingBox.color,creatingBox.shape);
+						shapesListStore.add(creatingBox);
+					}
+					else if(tokens[0].equals("cylinder"))
+					{
+						Shape creatingCylinder = new Shape("cylinder");
+						creatingCylinder.xPosition = Integer.parseInt(tokens[1]);
+						creatingCylinder.yPosition = Integer.parseInt(tokens[2]);
+						creatingCylinder.radius = Integer.parseInt(tokens[3]);
+						creatingCylinder.height = Integer.parseInt(tokens[4]);
+						creatingCylinder.idNum = idNumCounter;
+						creatingCylinder.scale=new Scale(1,1,1);
+						creatingCylinder.scale.setX(Double.parseDouble(tokens[6]));
+						creatingCylinder.scale.setY(Double.parseDouble(tokens[6]));
+						creatingCylinder.scale.setZ(Double.parseDouble(tokens[6]));
+						creatingCylinder.xrotate=new Rotate(0,Rotate.X_AXIS);
+						creatingCylinder.yrotate=new Rotate(0,Rotate.Y_AXIS);
+						creatingCylinder.horizontalAngle=Double.parseDouble(tokens[7]);
+						creatingCylinder.verticleAngle=Double.parseDouble(tokens[8]);
+						creatingCylinder.zAngle=Double.parseDouble(tokens[9]);
+						idNumCounter++;
+						Cylinder createdCylinder = new Cylinder(creatingCylinder.radius, creatingCylinder.height);
+						// test z rotate
+						
+						createdCylinder.getTransforms().addAll(creatingCylinder.xrotate,creatingCylinder.yrotate);
+						int testx = creatingCylinder.xPosition;
+						int testy = creatingCylinder.yPosition;
+						createdCylinder.getTransforms().addAll(new Translate(testx, testy, 0));
+						createdCylinder.getTransforms().addAll(creatingCylinder.scale);
+						createdCylinder.getTransforms().addAll(new Rotate(selectedShape.verticleAngle,Rotate.X_AXIS));
+						createdCylinder.getTransforms().addAll(new Rotate(selectedShape.horizontalAngle,Rotate.Y_AXIS));
+						createdCylinder.getTransforms().addAll(new Rotate(selectedShape.zAngle,Rotate.Z_AXIS));
+						createdCylinder.setId(Integer.toString(creatingCylinder.idNum));
+						createdCylinder.setOnMouseClicked(ActionEvent -> {
+							selectedShape = creatingCylinder;
+							selectedShape.xPosition = testx;
+							selectedShape.yPosition = testy;
+							
+							
+						});
+						shapes.getChildren().addAll(createdCylinder);
+						root.setCenter(shapeScene);
+						creatingCylinder.thisCylinder = createdCylinder;
+						setColor(creatingCylinder,creatingCylinder.color,creatingCylinder.shape);
+						shapesListStore.add(creatingCylinder);
+					}
+					else if(tokens[0].equals("background"))
+					{
+						switch (tokens[1]) {
+						case "blue":
+							shapeScene.setFill(Color.ROYALBLUE);
+							
+							break;
+						case "red":
+							shapeScene.setFill(Color.RED);
+							break;
+						case "pink":
+							shapeScene.setFill(Color.PINK);
+							break;
+						case "black":
+							shapeScene.setFill(Color.BLACK);
+							break;
+						case "orange":
+							shapeScene.setFill(Color.ORANGE);
+							break;
+						case "green":
+							shapeScene.setFill(Color.GREEN);
+							break;
+						case "purple":
+							shapeScene.setFill(Color.PLUM);
+							break;
+						}
+					}
 				}
 				fileReader.close();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Alert error=new Alert(AlertType.ERROR);
+				error.setContentText("Text File has wrongly formatted data");
+				error.showAndWait();
 			}
 
 		});
@@ -757,19 +789,23 @@ public class JavaFXApplication13 extends Application {
 					if (shape.shape.equals("sphere")) {
 						printWriter.println("sphere" + "," + Integer.toString(shape.xPosition) + ","
 								+ Integer.toString(shape.yPosition) + "," + Integer.toString(shape.radius) + ","
-								+ shape.color);
+								+ shape.color+","+Double.toString(shape.scale.getX()));
 					} else if (shape.shape.equals("box")) {
 						printWriter.println("box" + "," + Integer.toString(shape.xPosition) + ","
 								+ Integer.toString(shape.yPosition) + "," + Integer.toString(shape.length) + ","
 								+ Integer.toString(shape.width) + "," + Integer.toString(shape.height) + ","
-								+ shape.color);
+								+ shape.color+","+Double.toString(shape.scale.getX())+","+Double.toString(shape.horizontalAngle)+","
+								+Double.toString(shape.verticleAngle)+","+Double.toString(shape.zAngle));
+		
 					} else if (shape.shape.equals("cylinder")) {
 						printWriter.println("cylinder" + "," + Integer.toString(shape.xPosition) + ","
 								+ Integer.toString(shape.yPosition) + "," + Integer.toString(shape.radius) + ","
-								+ Integer.toString(shape.height) + "," + shape.color);
+								+ Integer.toString(shape.height) + "," + shape.color+","+Double.toString(shape.scale.getX())+","+Double.toString(shape.horizontalAngle)+","
+								+Double.toString(shape.verticleAngle)+","+Double.toString(shape.zAngle));
 					}
 
 				}
+				printWriter.println("background"+","+selected); //save background color 
 
 				printWriter.close();
 			}
@@ -800,9 +836,9 @@ public class JavaFXApplication13 extends Application {
 		chooseShapeButtons.setAlignment(Pos.CENTER);
 		createShapesMenu = new VBox(10, chooseShapeL, chooseShapeButtons, submitShapeChoice);
 
-		Label sphereL = new Label("Sphere Menu");
-		Label boxL = new Label("Box Menu");
-		Label cylinderL = new Label("Cylinder Menu");
+		Label sphereL = new Label("Sphere Menu: please keep values between 1-10");
+		Label boxL = new Label("Box Menu: please keep values between 1-10");
+		Label cylinderL = new Label("Cylinder Menu: please keep values between 1-10");
 		Label xPositionL = new Label("X Position: ");
 		Label xPositionSphereL = new Label("X Position: ");
 		Label xPositionCylinderL = new Label("X Position");
@@ -854,20 +890,64 @@ public class JavaFXApplication13 extends Application {
 		shapes = new Group();
 		shapeScene = new SubScene(shapes, 700, 550, true, SceneAntialiasing.DISABLED);
 		shapeScene.setFill(Color.LIGHTBLUE);
-
+		camera=new PerspectiveCamera(true);
+		camera.getTransforms().addAll(new Translate(0, 0, -100)); //HERE
+		shapeScene.setCamera(camera);
+		
+		scaleSlider=new Slider(0.0,100.0,50.0);
 		root.setCenter(shapeScene);
 	}
-
+	private void setColor(Shape inputtedShape, String inputtedColor,String shape)
+	{
+			Color color=Color.WHITE; 
+			switch (inputtedColor) {
+			case "blue":
+				color=Color.ROYALBLUE;
+				
+				break;
+			case "red":
+				color=Color.RED;
+				break;
+			case "pink":
+				color=Color.PINK;
+				break;
+			case "black":
+				color=Color.BLACK;
+				break;
+			case "orange":
+				color=Color.ORANGE;
+				break;
+			case "green":
+				color=Color.GREEN;
+				break;
+			case "purple":
+				color=Color.PLUM;
+				break;
+			}
+			if(shape.equals("box"))
+			{
+				inputtedShape.thisBox.setMaterial(new PhongMaterial(color));
+			}
+			else if(shape.equals("sphere"))
+			{
+				inputtedShape.thisSphere.setMaterial(new PhongMaterial(color));
+			}
+			else if(shape.equals("cylinder"))
+			{
+				inputtedShape.thisCylinder.setMaterial(new PhongMaterial(color));
+			}
+	}
 	private class Shape {
 		String shape = "";
 		int xPosition = 0;
 		int yPosition = 0;
-		Rotate zrotate;
+		
 		Rotate xrotate;
 		Rotate yrotate;
-                Scale scale;
-		Color color = null;
+       	Scale scale;
+		String color = "";
 		int length = 0, width = 0, height = 0, radius = 0, idNum = 0;
+		double horizontalAngle=0,verticleAngle=0,zAngle=0;
 		Sphere thisSphere = null;
 		Box thisBox = null;
 		Cylinder thisCylinder = null;
