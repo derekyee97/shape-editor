@@ -1,0 +1,23 @@
+.root{
+    -fx-font-family: cursive;
+    -fx-font-style: italic;
+    -fx-background-color: #F4F2F2;
+}
+.subScence{
+    -fx-background-color: #FFFFFF;
+}
+
+.label{
+    -fx-font-family: cursive;
+    -fx-font-style: italic;
+    
+    -fx-font-size: 12pt;
+    -fx-font-weight: bold;
+}
+
+.button
+{
+    -fx-font-weight: bold;
+    -fx-font-size: 10pt;
+    -fx-background-color: #FFD4D4;
+}

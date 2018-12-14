@@ -614,6 +614,7 @@ public class JavaFXApplication13 extends Application {
 		root.setLeft(test);
 
 		Scene scene = new Scene(root, 1000, 650);
+                scene.getStylesheets().add("file:./src/javafxapplication13/shapeCreatorCSS.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
