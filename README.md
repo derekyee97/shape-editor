@@ -1,7 +1,7 @@
 # shape_editor-GUI-
 Utilizes javafx to create a shape editor following popular GUI guidelines
 
-An example of the GUI is provided below. 
+An example of the GUI is provided by the screenshots below. 
 
 # Screenshots: 
 ![Image of Sorting Animation](https://github.com/derekyee97/shape_editor-GUI-/blob/master/gui_main.PNG)
